@@ -1,0 +1,80 @@
+<div class="container mt-5 admin-login-container animate__animated animate__fadeIn">
+  <h2><i class="fas fa-lock"></i> Admin Login</h2>
+  
+  <div *ngIf="success" class="toast show toast-success animate__animated animate__bounceIn" role="alert">
+    <div class="toast-body">
+      <i class="fas fa-check-circle"></i> {{ success }}
+    </div>
+  </div>
+  
+  <div *ngIf="error" class="alert alert-danger animate__animated animate__shakeX">
+    <i class="fas fa-exclamation-triangle"></i> {{ error }}
+  </div>
+  
+  <form #f="ngForm" (ngSubmit)="loginAdmin()" class="login-form">
+    <div class="form-group mb-4">
+      <label for="username" class="form-label">
+        <i class="fas fa-user"></i> Username
+      </label>
+      <input 
+        type="text" 
+        class="form-control" 
+        id="username" 
+        [(ngModel)]="login.username" 
+        name="username" 
+        required
+        placeholder="Enter your username"
+      >
+    </div>
+    
+    <div class="form-group mb-4">
+      <label for="password" class="form-label">
+        <i class="fas fa-key"></i> Password
+      </label>
+      <input 
+        type="password" 
+        class="form-control" 
+        id="password" 
+        [(ngModel)]="login.password" 
+        name="password" 
+        required
+        placeholder="Enter your password"
+      >
+    </div>
+    
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary btn-lg" [disabled]="!f.valid">
+        <i class="fas fa-sign-in-alt"></i> 
+        <span class="btn-text">Login</span>
+        <div class="btn-loading" *ngIf="isLoading">
+          <div class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </button>
+    </div>
+  </form>
+  
+  <div class="mt-5 text-center">
+    <div class="quick-links">
+      <p class="mb-3">
+        <i class="fas fa-info-circle text-primary"></i> 
+        Not an admin? 
+        <a href="/admin-register" class="text-primary fw-bold link-hover">
+          <i class="fas fa-user-shield"></i> Register
+        </a>
+      </p>
+      <p class="mb-3">
+        <i class="fas fa-users text-success"></i> 
+        User? 
+        <a href="/user-validate" class="text-primary fw-bold link-hover">
+          <i class="fas fa-search"></i> Validate Mobile
+        </a> 
+        or 
+        <a href="/user-register" class="text-primary fw-bold link-hover">
+          <i class="fas fa-user-plus"></i> Register
+        </a>
+      </p>
+    </div>
+  </div>
+</div>

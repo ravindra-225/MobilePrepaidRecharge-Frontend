@@ -1,0 +1,116 @@
+<div class="container mt-5 home-container animate__animated animate__fadeIn">
+  <!-- Welcome Section -->
+  <div class="welcome-section text-center mb-5">
+    <h1 class="welcome-title">
+      <i class="fas fa-mobile-alt"></i> Welcome to Mobile Prepaid Recharge
+    </h1>
+    <p class="welcome-subtitle">Your trusted platform for seamless mobile recharges and prepaid plans</p>
+  </div>
+
+  <!-- Main Content Section -->
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 mb-5">
+      <div class="content-card main-section">
+        <div class="card-header text-center">
+          <h2><i class="fas fa-home"></i> Welcome to Our Platform</h2>
+          <p>Validate your mobile number, register for services, or access admin features</p>
+        </div>
+        
+        <div *ngIf="success" class="toast show toast-success animate__animated animate__bounceIn" role="alert">
+          <div class="toast-body">
+            <i class="fas fa-check-circle"></i> {{ success }}
+          </div>
+        </div>
+        
+        <div *ngIf="error" class="alert alert-danger animate__animated animate__shakeX">
+          <i class="fas fa-exclamation-triangle"></i> {{ error }}
+        </div>
+        
+        <!-- Mobile Validation Form -->
+        <div class="validation-section mb-4">
+          <h4 class="section-title text-center mb-3">
+            <i class="fas fa-mobile-alt"></i> Mobile Validation
+          </h4>
+          <form #f="ngForm" (ngSubmit)="validate()" class="validate-form">
+            <div class="form-group mb-4">
+              <label for="mobileNumber" class="form-label">
+                <i class="fas fa-mobile-alt"></i> Mobile Number
+              </label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="mobileNumber" 
+                [(ngModel)]="mobile.mobileNumber" 
+                name="mobileNumber" 
+                required
+                placeholder="Enter your 10-digit mobile number"
+              >
+            </div>
+            
+            <div class="form-actions text-center">
+              <button type="submit" class="btn btn-primary btn-lg" [disabled]="!f.valid">
+                <span class="btn-text">Validate</span>
+                <div class="btn-loading" *ngIf="isLoading">
+                  <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </button>
+            </div>
+          </form>
+          
+          <!-- User Register Option -->
+          <div class="register-option text-center mt-4">
+            <p class="mb-3">
+              <i class="fas fa-info-circle text-primary"></i> 
+              Not registered? 
+            </p>
+            <a href="/user-register" class="btn btn-outline-primary btn-lg">
+              <i class="fas fa-user-plus"></i> Register New User
+            </a>
+          </div>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="info-section text-center mt-4">
+          <p class="mb-2">
+            <i class="fas fa-info-circle text-primary"></i> 
+            Need help? Contact our support team
+          </p>
+          <p class="mb-0">
+            <i class="fas fa-clock text-success"></i> 
+            24/7 Customer Support Available
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="features-section text-center mt-5">
+    <h3><i class="fas fa-star"></i> Why Choose Mobile Prepaid Recharge?</h3>
+    <div class="row mt-4">
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <i class="fas fa-bolt feature-icon"></i>
+          <h5>Instant Recharge</h5>
+          <p>Get your mobile recharged instantly with secure payment options</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <i class="fas fa-shield-alt feature-icon"></i>
+          <h5>Secure & Safe</h5>
+          <p>Your transactions are protected with bank-level security</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <i class="fas fa-headset feature-icon"></i>
+          <h5>24/7 Support</h5>
+          <p>Round the clock customer support for all your queries</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

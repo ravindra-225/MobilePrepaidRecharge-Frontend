@@ -1,0 +1,51 @@
+.admin-register-container {
+  max-width: 400px;
+  background: linear-gradient(135deg, #ffffff, #ffccbc);
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.form-control {
+  border: 2px solid #ff7043;
+  border-radius: 8px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-control:focus {
+  border-color: #f4511e;
+  box-shadow: 0 0 8px rgba(244, 81, 30, 0.3);
+}
+
+.form-control.ng-invalid.ng-touched,
+.form-control.ng-invalid.ng-dirty {
+  border-color: #ef5350;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 10px;
+  font-size: 1.1rem;
+}
+
+a {
+  color: #ff7043;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #f4511e;
+  text-decoration: underline;
+}
+
+.text-danger {
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+@media (max-width: 576px) {
+  .admin-register-container {
+    margin: 10px;
+    padding: 15px;
+  }
+}

@@ -1,0 +1,108 @@
+<div class="container mt-5 user-register-container animate__animated animate__fadeIn">
+  <h2><i class="fas fa-user-plus"></i> User Registration</h2>
+  
+  <div *ngIf="success" class="toast show toast-success animate__animated animate__bounceIn" role="alert">
+    <div class="toast-body">
+      <i class="fas fa-check-circle"></i> {{ success }}
+    </div>
+  </div>
+  
+  <div *ngIf="error" class="alert alert-danger animate__animated animate__shakeX">
+    <i class="fas fa-exclamation-triangle"></i> {{ error }}
+  </div>
+  
+  <form #f="ngForm" (ngSubmit)="register()" class="registration-form">
+    <div class="form-group mb-4">
+      <label for="mobileNumber" class="form-label">
+        <i class="fas fa-mobile-alt"></i> Mobile Number
+      </label>
+      <input
+        type="text"
+        class="form-control"
+        id="mobileNumber"
+        [(ngModel)]="user.mobileNumber"
+        name="mobileNumber"
+        #mobileNumber="ngModel"
+        pattern="\d{10}"
+        required
+        placeholder="Enter 10-digit mobile number"
+      />
+      <div *ngIf="mobileNumber.touched && mobileNumber.invalid" class="text-danger small mt-2">
+        <div *ngIf="mobileNumber.errors?.['required']">
+          <i class="fas fa-exclamation-circle"></i> Mobile number is required
+        </div>
+        <div *ngIf="mobileNumber.errors?.['pattern']">
+          <i class="fas fa-exclamation-circle"></i> Must be 10 digits
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-group mb-4">
+      <label for="name" class="form-label">
+        <i class="fas fa-user"></i> Full Name
+      </label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        [(ngModel)]="user.name"
+        name="name"
+        #name="ngModel"
+        required
+        placeholder="Enter your full name"
+      />
+      <div *ngIf="name.touched && name.invalid" class="text-danger small mt-2">
+        <i class="fas fa-exclamation-circle"></i> Name is required
+      </div>
+    </div>
+    
+    <div class="form-group mb-4">
+      <label for="email" class="form-label">
+        <i class="fas fa-envelope"></i> Email Address
+      </label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        [(ngModel)]="user.email"
+        name="email"
+        #email="ngModel"
+        pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+        required
+        placeholder="Enter your email address"
+      />
+      <div *ngIf="email.touched && email.invalid" class="text-danger small mt-2">
+        <div *ngIf="email.errors?.['required']">
+          <i class="fas fa-exclamation-circle"></i> Email is required
+        </div>
+        <div *ngIf="email.errors?.['pattern']">
+          <i class="fas fa-exclamation-circle"></i> Invalid email format
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary btn-lg" [disabled]="f.invalid">
+        <i class="fas fa-save"></i> 
+        <span class="btn-text">Register</span>
+        <div class="btn-loading" *ngIf="isLoading">
+          <div class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+    </button>
+    </div>
+  </form>
+  
+  <div class="mt-5 text-center">
+    <div class="quick-links">
+      <p class="mb-3">
+        <i class="fas fa-info-circle text-primary"></i> 
+        Already registered? 
+        <a href="/user-validate" class="text-primary fw-bold link-hover">
+          <i class="fas fa-search"></i> Validate Mobile
+        </a>
+      </p>
+    </div>
+  </div>
+</div>

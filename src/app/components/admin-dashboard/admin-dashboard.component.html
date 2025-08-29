@@ -1,0 +1,135 @@
+<div class="admin-dashboard-wrapper">
+  <div class="admin-dashboard-container">
+    <!-- Header Section -->
+    <div class="dashboard-header">
+  <h2><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h2>
+      <p class="dashboard-subtitle">Manage subscribers and view recharge history</p>
+      <button type="button" class="btn btn-secondary logout-btn" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+
+    <!-- Alert Messages -->
+    <div *ngIf="success" class="alert alert-success animate__animated animate__fadeIn" style="position:sticky;top:0;z-index:100;">
+      <i class="fas fa-check-circle"></i> {{ success }}
+  </div>
+  <div *ngIf="error" class="alert alert-danger animate__animated animate__shakeX">
+    <i class="fas fa-exclamation-triangle"></i> {{ error }}
+  </div>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+      <!-- Expiring Subscribers Section -->
+      <div class="dashboard-section">
+        <h3>Expiring Subscribers ({{ subscribers.length > 0 ? subscribers.length : 0 }})</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Mobile</th>
+        <th>Name</th>
+        <th>Plan</th>
+        <th>Expiry</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sub of subscribers">
+        <td>{{ sub.mobileNumber }}</td>
+        <td>{{ sub.name }}</td>
+        <td>{{ sub.planName }}</td>
+        <td>{{ sub.expiryDate }}</td>
+      </tr>
+    </tbody>
+  </table>
+      </div>
+
+      <!-- Recharge History Section -->
+      <div class="dashboard-section">
+        <h3><i class="fas fa-history"></i> User Recharge History</h3>
+        <div class="search-form">
+          <form #f="ngForm" (ngSubmit)="loadHistory()" class="history-form">
+            <div class="form-group">
+              <label for="mobileNumber" class="form-label">
+                <i class="fas fa-search"></i> Mobile Number
+              </label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="mobileNumber" 
+                [(ngModel)]="mobileNumber" 
+                name="mobileNumber" 
+                placeholder="Enter mobile number"
+                required
+              >
+            </div>
+            <button type="submit" class="btn btn-primary search-btn" [disabled]="!f.valid">
+              <i class="fas fa-search"></i> Search
+            </button>
+          </form>
+        </div>
+        <div *ngIf="error" class="alert alert-danger animate__animated animate__shakeX">
+          <i class="fas fa-exclamation-triangle"></i> {{ error }}
+        </div>
+        <div *ngIf="history.length === 0 && mobileNumber" class="text-center no-history">
+          <h4>No Recharge History</h4>
+          <p class="text-muted">No recharges found for this user.</p>
+        </div>
+        <div *ngIf="history.length > 0" class="history-list">
+          <div class="row">
+            <div class="col-12" *ngFor="let hist of history; let i = index">
+              <div class="history-card animate__animated animate__fadeIn" [style.animation-delay]="(i * 0.1) + 's'">
+                <div class="card-header">
+                  <div class="transaction-info">
+                    <h5 class="plan-name">{{ hist.planName || 'Recharge Plan' }}</h5>
+                    <span class="transaction-id">#{{ hist.transactionId }}</span>
+                  </div>
+                  <div class="status-badge" [ngClass]="getStatusClass(hist.status)">
+                    <i class="fas"
+                       [ngClass]="{
+                         'fa-check-circle': hist.status?.toLowerCase() === 'completed',
+                         'fa-clock': hist.status?.toLowerCase() === 'pending',
+                         'fa-times-circle': hist.status?.toLowerCase() === 'failed',
+                         'fa-question-circle': !hist.status
+                       }"></i>
+                    {{ hist.status || 'Unknown' }}
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="detail-item">
+                        <span class="label"><i class="fas fa-rupee-sign"></i> Amount:</span>
+                        <span class="value">₹{{ hist.amount }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label"><i class="fas fa-credit-card"></i> Payment Mode:</span>
+                        <span class="value">{{ hist.paymentMode }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label"><i class="fas fa-calendar"></i> Date:</span>
+                        <span class="value">{{ formatDate(hist.rechargeDate || hist.createdAt) }}</span>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="detail-item" *ngIf="hist.planDescription">
+                        <span class="label"><i class="fas fa-info-circle"></i> Description:</span>
+                        <span class="value">{{ hist.planDescription }}</span>
+                      </div>
+                      <div class="detail-item" *ngIf="hist.validity">
+                        <span class="label"><i class="fas fa-calendar-check"></i> Validity:</span>
+                        <span class="value">{{ hist.validity }} days</span>
+                      </div>
+                      <div class="detail-item" *ngIf="hist.data">
+                        <span class="label"><i class="fas fa-wifi"></i> Data:</span>
+                        <span class="value">{{ hist.data }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

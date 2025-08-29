@@ -1,0 +1,89 @@
+<div class="container mt-5 admin-register-container">
+  <h2><i class="fas fa-user-shield"></i> Admin Registration</h2>
+  <div *ngIf="success" class="toast show toast-success animate__animated animate__fadeIn" role="alert">
+    <div class="toast-body"><i class="fas fa-check-circle"></i> {{ success }}</div>
+  </div>
+  <div *ngIf="error" class="alert alert-danger animate__animated animate__shakeX">
+    <i class="fas fa-exclamation-triangle"></i> {{ error }}
+  </div>
+  <form #f="ngForm" (ngSubmit)="register()">
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        [(ngModel)]="admin.username"
+        name="username"
+        #username="ngModel"
+        minlength="4"
+        required
+        (ngModelChange)="error = null"
+      />
+      <div *ngIf="username.touched || username.dirty" class="text-danger small">
+        <div *ngIf="username.errors?.['required']">Username is required</div>
+        <div *ngIf="username.errors?.['minlength']">Username must be at least 4 characters</div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        [(ngModel)]="admin.email"
+        name="email"
+        #email="ngModel"
+        pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+        required
+        (ngModelChange)="error = null"
+      />
+      <div *ngIf="email.touched || email.dirty" class="text-danger small">
+        <div *ngIf="email.errors?.['required']">Email is required</div>
+        <div *ngIf="email.errors?.['pattern']">Invalid email format</div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        [(ngModel)]="admin.password"
+        name="password"
+        #password="ngModel"
+        required
+        (ngModelChange)="error = null"
+      />
+      <div *ngIf="password.touched || password.dirty" class="text-danger small">
+        <div *ngIf="password.errors?.['required']">Password is required</div>
+        <div *ngIf="!password.errors?.['required'] && !isValidPassword()">
+          Password must be at least 8 characters, include uppercase, lowercase, digit, and special character
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        [(ngModel)]="admin.name"
+        name="name"
+        #name="ngModel"
+        required
+        (ngModelChange)="error = null"
+      />
+      <div *ngIf="name.touched || name.dirty" class="text-danger small">
+        <div *ngIf="name.errors?.['required']">Name is required</div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="f.invalid || !isValidPassword()">
+      <i class="fas fa-save"></i> Register
+    </button>
+  </form>
+  <div class="mt-3">
+    <p>Already an admin? <a href="/admin-login" class="text-primary fw-bold">Login</a></p>
+    <p>User? <a href="/user-validate" class="text-primary fw-bold">Validate Mobile</a> or <a href="/user-register" class="text-primary fw-bold">Register</a></p>
+  </div>
+</div>

@@ -1,0 +1,122 @@
+<div class="container mt-5">
+  <h2 class="text-center mb-4"><i class="fas fa-wallet"></i> Recharge Plans</h2>
+  
+  <div *ngIf="success" class="alert alert-success animate__animated animate__fadeIn">
+    <i class="fas fa-check-circle"></i> {{ success }}
+  </div>
+  <div *ngIf="error" class="alert alert-danger animate__animated animate__shakeX">
+    <i class="fas fa-exclamation-triangle"></i> {{ error }}
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Mobile Number</label>
+    <input type="text" class="form-control" [value]="mobileNumber" readonly>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center mb-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Loading plans...</p>
+  </div>
+
+  <div *ngIf="!isLoading && !selectedPlan && !error">
+    <div *ngFor="let category of groupedPlans | keyvalue" class="mb-5">
+      <h3 class="category-title">{{ category.key }}</h3>
+      <div class="row">
+        <div class="col-md-4 col-sm-6 mb-3" *ngFor="let plan of category.value">
+          <div class="plan-card" (click)="selectPlan(plan)">
+            <h4>{{ plan.name }}</h4>
+            <p class="price">₹{{ plan.price }}</p>
+            <p>{{ plan.description }}</p>
+            <p><strong>Validity:</strong> {{ plan.validity }} days</p>
+            <p><strong>Data:</strong> {{ plan.data || 'N/A' }}</p>
+            <button class="btn btn-primary">Select Plan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="selectedPlan" class="payment-section">
+    <h3>Selected Plan: {{ selectedPlan.name }}</h3>
+    <p><strong>Price:</strong> ₹{{ selectedPlan.price }}</p>
+    <p><strong>Validity:</strong> {{ selectedPlan.validity }} days</p>
+    <p><strong>Description:</strong> {{ selectedPlan.description }}</p>
+
+    <form #f="ngForm" (ngSubmit)="submitRecharge()">
+      <div class="mb-3">
+        <label for="paymentMode" class="form-label">Payment Mode</label>
+        <select class="form-control" id="paymentMode" [(ngModel)]="paymentMode" name="paymentMode" required>
+          <option value="" disabled selected>Select Payment Mode</option>
+          <option value="UPI">UPI</option>
+          <option value="BANK_TRANSFER">Bank Transfer</option>
+          <option value="CARD">Credit/Debit Card</option>
+        </select>
+      </div>
+
+      <div *ngIf="paymentMode === 'UPI'" class="mb-3">
+        <label for="upiId" class="form-label">UPI ID</label>
+        <input type="text" class="form-control" id="upiId" [(ngModel)]="paymentDetails.upiId" name="upiId" required>
+        <div *ngIf="f.controls['upiId']?.touched && !isValidUpiId()" class="text-danger small">
+          Invalid UPI ID format (e.g., user&#64;upi)
+        </div>
+      </div>
+
+      <div *ngIf="paymentMode === 'BANK_TRANSFER'">
+        <div class="mb-3">
+          <label for="accountNumber" class="form-label">Account Number</label>
+          <input type="text" class="form-control" id="accountNumber" [(ngModel)]="paymentDetails.accountNumber" name="accountNumber" required>
+          <div *ngIf="f.controls['accountNumber']?.touched && !isValidAccountNumber()" class="text-danger small">
+            Invalid account number (9-18 digits)
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="ifscCode" class="form-label">IFSC Code</label>
+          <input type="text" class="form-control" id="ifscCode" [(ngModel)]="paymentDetails.ifscCode" name="ifscCode" required>
+          <div *ngIf="f.controls['ifscCode']?.touched && !isValidIfscCode()" class="text-danger small">
+            Invalid IFSC code (e.g., SBIN0001234)
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="paymentMode === 'CARD'">
+        <div class="mb-3">
+          <label for="cardNumber" class="form-label">Card Number</label>
+          <input type="text" class="form-control" id="cardNumber" [(ngModel)]="paymentDetails.cardNumber" name="cardNumber" required>
+          <div *ngIf="f.controls['cardNumber']?.touched && !isValidCardNumber()" class="text-danger small">
+            Invalid card number (16 digits)
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="expiryDate" class="form-label">Expiry Date (MM/YY)</label>
+          <input type="text" class="form-control" id="expiryDate" [(ngModel)]="paymentDetails.expiryDate" name="expiryDate" required>
+          <div *ngIf="f.controls['expiryDate']?.touched && !isValidExpiryDate()" class="text-danger small">
+            Invalid expiry date (e.g., 12/25)
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="cvv" class="form-label">CVV</label>
+          <input type="text" class="form-control" id="cvv" [(ngModel)]="paymentDetails.cvv" name="cvv" required>
+          <div *ngIf="f.controls['cvv']?.touched && !isValidCvv()" class="text-danger small">
+            Invalid CVV (3-4 digits)
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="f.invalid || (paymentMode === 'UPI' && !isValidUpiId()) || (paymentMode === 'BANK_TRANSFER' && (!isValidAccountNumber() || !isValidIfscCode())) || (paymentMode === 'CARD' && (!isValidCardNumber() || !isValidExpiryDate() || !isValidCvv()))">
+        <i class="fas fa-paper-plane"></i> Process Payment
+      </button>
+      <button type="button" class="btn btn-secondary ms-2" (click)="selectedPlan = null">Back to Plans</button>
+    </form>
+  </div>
+
+  <div class="mt-4">
+    <button type="button" class="btn btn-info me-2" (click)="viewHistory()">
+      <i class="fas fa-history"></i> View History
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+  </div>
+</div>
