@@ -1,27 +1,91 @@
-# MobicomFrontend
+# 📱 Mobile Prepaid Recharge System - Frontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.19.
+## 📌 Overview
+This repository contains the **Angular frontend** for the Mobile Prepaid Recharge System.  
+It provides a **responsive UI** for:
+- User Registration, Login & Validation
+- Admin Registration & Login
+- Mobile Recharge workflows
+- Viewing Recharge History
+- Role-based navigation (User vs Admin)
 
-## Development server
+The frontend integrates seamlessly with the [Backend APIs](../mobile-prepaid-recharge-backend) (Spring Boot + JWT).
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+---
 
-## Code scaffolding
+## 🚀 Features
+- 🔑 **JWT Authentication** with secure login/logout
+- 👨‍💼 Admin module: Register, Login, Manage subscribers
+- 👤 User module: Register, Validate mobile, Recharge, View history
+- 💳 Recharge workflows integrated with backend APIs
+- 📜 History view with dynamic data
+- 📱 Responsive layout (Angular + Bootstrap/Material)
+- 🧩 Modular architecture with reusable components & services
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+## 🛠️ Tech Stack
+- **Frontend**: Angular 16+, TypeScript
+- **UI**: HTML5, CSS3, Bootstrap / Angular Material
+- **State Mgmt**: Services with RxJS
+- **API Integration**: HttpClient (REST calls to Spring Boot backend)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+---
 
-## Running unit tests
+## 📂 Project Structure
+src/app/  
+├── components/  
+│ ├── admin-login/ # Admin login UI  
+│ ├── admin-register/ # Admin registration  
+│ ├── user-register/ # User registration  
+│ ├── user-validate/ # User validation  
+│ ├── recharge/ # Recharge component  
+│ ├── user-history/ # Recharge history view  
+│ ├── footer/ # Footer component  
+│ └── app.component.ts # Root component  
+│  
+├── services/  
+│ ├── admin.service.ts # Admin API integration  
+│ ├── auth.service.ts # Authentication & JWT handling  
+│ ├── recharge.service.ts # Recharge API integration  
+│  
+├── app.config.ts # Angular app config  
+├── app.routes.ts # Routing configuration  
+└── app.module.ts # Module definitions  
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+---
 
-## Running end-to-end tests
+## ⚡ Screens & Workflows
+- **Admin Login/Register** → Authenticate & access admin-only pages  
+- **User Register/Login/Validate** → Create account & verify mobile  
+- **Recharge Page** → Select plan, make payment, confirm recharge  
+- **User History** → View past recharges by mobile number  
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+---
 
-## Further help
+## ▶️ Getting Started
+1. Clone the repository  
+   ```bash
+   git clone https://github.com/yourusername/mobile-prepaid-recharge-frontend.git
+   cd mobile-prepaid-recharge-frontend  
+- Install dependencies  
+- npm install  
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+2. Run the development server  
+ng serve
+Open http://localhost:4200 in your browser
+
+---
+
+## 🔗 Backend Integration    
+The frontend consumes REST APIs from the backend service:
+👉 https://github.com/ravindra-225/MobilePrepaidRecharge-backend
+
+Update the backend URL in auth.service.ts & other services before running.  
+
+---  
+## 📌 Future Enhancements
+- Better error handling & toast notifications
+- Pagination & filtering in history & plan views
+- Unit testing with Jasmine/Karma  
+
